@@ -8,33 +8,91 @@ from cocotb.triggers import ClockCycles
 
 @cocotb.test()
 async def test_project(dut):
-    dut._log.info("Start")
+    dut._log.info("Start AquaPay Chip Test")
 
-    # Set the clock period to 10 us (100 KHz)
+    # Clock: 100 KHz
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
     # Reset
-    dut._log.info("Reset")
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
+    await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
 
-    dut._log.info("Test project behavior")
+    # ---------------- ₹1 TEST ----------------
+    dut._log.info("Testing ₹1 → 2 Liters")
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
-
-    # Wait for one clock cycle to see the output values
+    dut.ui_in.value = 0b00000001  # coin_1
     await ClockCycles(dut.clk, 1)
+    dut.ui_in.value = 0
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
+    # simulate 2 liters
+    for i in range(2):
+        dut.ui_in.value = 0b00010000  # flow_sensor
+        await ClockCycles(dut.clk, 1)
+        dut.ui_in.value = 0
+        await ClockCycles(dut.clk, 1)
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    await ClockCycles(dut.clk, 2)
+
+    liters = (dut.uo_out.value >> 1) & 0x7F
+    assert liters == 2, f"₹1 failed: got {liters}"
+
+    # ---------------- ₹2 TEST ----------------
+    dut._log.info("Testing ₹2 → 5 Liters")
+
+    dut.ui_in.value = 0b00000010
+    await ClockCycles(dut.clk, 1)
+    dut.ui_in.value = 0
+
+    for i in range(5):
+        dut.ui_in.value = 0b00010000
+        await ClockCycles(dut.clk, 1)
+        dut.ui_in.value = 0
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 2)
+
+    liters = (dut.uo_out.value >> 1) & 0x7F
+    assert liters == 5, f"₹2 failed: got {liters}"
+
+    # ---------------- ₹5 TEST ----------------
+    dut._log.info("Testing ₹5 → 20 Liters")
+
+    dut.ui_in.value = 0b00000100
+    await ClockCycles(dut.clk, 1)
+    dut.ui_in.value = 0
+
+    for i in range(20):
+        dut.ui_in.value = 0b00010000
+        await ClockCycles(dut.clk, 1)
+        dut.ui_in.value = 0
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 2)
+
+    liters = (dut.uo_out.value >> 1) & 0x7F
+    assert liters == 20, f"₹5 failed: got {liters}"
+
+    # ---------------- ₹10 TEST ----------------
+    dut._log.info("Testing ₹10 → 40 Liters")
+
+    dut.ui_in.value = 0b00001000
+    await ClockCycles(dut.clk, 1)
+    dut.ui_in.value = 0
+
+    for i in range(40):
+        dut.ui_in.value = 0b00010000
+        await ClockCycles(dut.clk, 1)
+        dut.ui_in.value = 0
+        await ClockCycles(dut.clk, 1)
+
+    await ClockCycles(dut.clk, 2)
+
+    liters = (dut.uo_out.value >> 1) & 0x7F
+    assert liters == 40, f"₹10 failed: got {liters}"
+
+    dut._log.info("All tests PASSED ✅")
