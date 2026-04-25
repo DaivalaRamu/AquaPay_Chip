@@ -1,38 +1,50 @@
-yaml_version: 6
-
 project:
-  title: "AquaPay Chip"
+  name: "AquaPay_Chip"
+  description: "Digital payment processing chip for TinyTapeout"
+
+  # REQUIRED → FIXED
+  language: "verilog"
+  clock_hz: 1000000
+
+  # IMPORTANT → put your actual file names here
+  source_files:
+    - "src/top.v"
+
+  # Your top module name (must match your Verilog)
+  top_module: "top"
+
+  # Optional but recommended
   author: "Ramu"
-  description: "Digital payment chip design"
-  tiles: "1x1"
-  top_module: "tt_um_aquapay"
-  language: "verilog"        # ✅ ADD THIS
-  clock_hz: 25000000        # ✅ ADD THIS (25 MHz typical)
+  github: "https://github.com/your-username/AquaPay_Chip"
 
 pinout:
-  ui[0]: "input_0"
-  ui[1]: "input_1"
-  ui[2]: "input_2"
-  ui[3]: "input_3"
-  ui[4]: "input_4"
-  ui[5]: "input_5"
-  ui[6]: "input_6"
-  ui[7]: "input_7"
+  # Example pin mapping (edit based on your design)
+  ui:
+    - "input1"
+    - "input2"
+    - "input3"
+    - "input4"
+    - "input5"
+    - "input6"
+    - "input7"
+    - "input8"
 
-  uo[0]: "output_0"
-  uo[1]: "output_1"
-  uo[2]: "output_2"
-  uo[3]: "output_3"
-  uo[4]: "output_4"
-  uo[5]: "output_5"
-  uo[6]: "output_6"
-  uo[7]: "output_7"
+  uo:
+    - "output1"
+    - "output2"
+    - "output3"
+    - "output4"
+    - "output5"
+    - "output6"
+    - "output7"
+    - "output8"
 
-  uio[0]: "io_0"
-  uio[1]: "io_1"
-  uio[2]: "io_2"
-  uio[3]: "io_3"
-  uio[4]: "io_4"
-  uio[5]: "io_5"
-  uio[6]: "io_6"
-  uio[7]: "io_7"
+  uio:
+    - "io1"
+    - "io2"
+    - "io3"
+    - "io4"
+    - "io5"
+    - "io6"
+    - "io7"
+    - "io8"
