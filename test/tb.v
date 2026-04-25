@@ -3,11 +3,7 @@
 
 module tb ();
 
-  // Dump waveform
-  initial begin
-    $dumpfile("tb.fst");
-    $dumpvars(0, tb);
-  end
+ 
 
   // Signals
   reg clk;
