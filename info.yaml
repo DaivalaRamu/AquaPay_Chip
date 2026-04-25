@@ -1,22 +1,16 @@
-# Tiny Tapeout project information
 project:
   title:        "AquaPay Chip"
   author:       "Ramu"
-  discord:      ""      
-  description:  "Coin-based smart water dispensing chip with flow and time control"
+  description:  "Coin-based smart water dispensing chip"
   language:     "Verilog"
-  clock_hz:     1000000   # 1 MHz (safe default)
-
-  tiles: "1x1"
-
-  top_module:  "tt_um_aquapay_chip"
+  clock_hz:     1000000
+  tiles:        "1x1"
+  top_module:   "tt_um_aquapay_chip"
 
   source_files:
     - "project.v"
 
-# Pinout
 pinout:
-  # Inputs
   ui[0]: "coin_1"
   ui[1]: "coin_2"
   ui[2]: "coin_5"
@@ -26,7 +20,6 @@ pinout:
   ui[6]: ""
   ui[7]: ""
 
-  # Outputs
   uo[0]: "valve_on"
   uo[1]: "liters_bit0"
   uo[2]: "liters_bit1"
@@ -36,7 +29,6 @@ pinout:
   uo[6]: "liters_bit5"
   uo[7]: "liters_bit6"
 
-  # Bidirectional pins
   uio[0]: ""
   uio[1]: ""
   uio[2]: ""
