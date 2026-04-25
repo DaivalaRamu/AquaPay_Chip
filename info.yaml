@@ -8,7 +8,7 @@ project:
 
   # IMPORTANT → put your actual file names here
   source_files:
-    - "src/top.v"
+    - "src/project.v"
 
   # Your top module name (must match your Verilog)
   top_module: "top"
