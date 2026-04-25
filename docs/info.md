@@ -1,36 +1,35 @@
 # AquaPay Chip
 
 ## Description
-This project implements the AquaPay chip design for TinyTapeout.  
-It is a simple digital circuit designed for demonstration and testing purposes.
+AquaPay chip is a simple digital design that processes input signals and produces outputs based on predefined logic.
 
 ---
 
 ## How it works
-The design takes input signals and processes them based on predefined logic.
+The chip reads input signals from input pins and processes them using internal digital logic.
 
-- Inputs are taken through designated pins.
-- Internal logic performs operations (e.g., control/payment logic).
-- Output is generated accordingly.
+- Inputs are given through ui pins
+- Logic block processes signals
+- Output is produced on uo pins
 
 Example:
-- If input = valid signal → output = success
-- If input = invalid → output = failure
+- Valid input → Output HIGH
+- Invalid input → Output LOW
 
 ---
 
 ## How to test
 
-### Step 1: Provide Inputs
-Apply test signals to the input pins using a testbench or simulator.
+### Step 1
+Provide inputs using testbench or simulator.
 
-### Step 2: Run Simulation
-Use a Verilog simulator (like Icarus Verilog or TinyTapeout test setup).
+### Step 2
+Run simulation using TinyTapeout tools.
 
-### Step 3: Verify Output
-Check if output matches expected behavior.
+### Step 3
+Check outputs.
 
-Example test cases:
+Test Cases:
 - Input = 0001 → Output = 1
 - Input = 0000 → Output = 0
 
