@@ -1,77 +1,75 @@
-# AquaPay Chip 💧
+# AquaPay Chip
 
-## Overview
-
-AquaPay Chip is a digital water dispensing system implemented using Verilog.
-It simulates a smart prepaid water system where users insert coins and receive water based on the amount.
-
----
-
-## How it works ⚙️
-
-The AquaPay Chip works based on simple input-output logic:
-
-* User inserts money using input pins
-* The system processes the value
-* Based on the amount, water is dispensed
-
-### Logic:
-
-* ₹1 → 2 Liters
-* ₹2 → 5 Liters
-* ₹5 → 12 Liters
-
-The chip continuously monitors inputs and updates output accordingly.
+## Description
+AquaPay Chip is a coin-based smart water dispensing system.  
+It accepts coins and controls a water valve based on the inserted amount.  
+Water flow is measured using a flow sensor.
 
 ---
 
-## Inputs 🧾
+## How it works
 
-| Signal | Description             |
-| ------ | ----------------------- |
-| ui_in  | User input (coin value) |
-| rst_n  | Reset signal            |
-| clk    | Clock                   |
+- The system accepts coin inputs:
+  - ui[0] → ₹1
+  - ui[1] → ₹2
+  - ui[2] → ₹5
+  - ui[3] → ₹10
 
----
+- Total amount is calculated internally.
 
-## Outputs 🚰
+- Based on the amount:
+  - Water valve (uo[0]) turns ON
+  - Water is dispensed
 
-| Signal | Description                    |
-| ------ | ------------------------------ |
-| uo_out | Output showing liters of water |
+- Flow sensor (ui[4]) counts pulses:
+  - Each pulse = small quantity of water
+  - Pulses are converted into liters
 
----
+- Output:
+  - uo[1] to uo[7] → binary value of liters dispensed
 
-## How to test 🧪
-
-You can test the design using simulation:
-
-### Steps:
-
-1. Provide input value through `ui_in`
-2. Run simulation using cocotb
-3. Observe output in `uo_out`
-
-### Expected Results:
-
-| Input (₹) | Output (Liters) |
-| --------- | --------------- |
-| 1         | 2               |
-| 2         | 5               |
-| 5         | 12              |
+- Reset (ui[5]) clears system.
 
 ---
 
-## Tools Used 🛠️
+## How to test
 
-* Verilog HDL
-* Icarus Verilog
-* Cocotb
-* TinyTapeout
+1. Apply clock (1 MHz default)
+
+2. Insert coins:
+   - Set ui[0..3] HIGH one by one
+
+3. Check:
+   - uo[0] = 1 → valve ON
+
+4. Simulate flow sensor:
+   - Toggle ui[4] to generate pulses
+
+5. Observe:
+   - uo[1..7] increasing (liters output)
+
+6. Reset:
+   - Set ui[5] = 1 → system resets
 
 ---
 
-## Author 👨‍💻
+## Pinout
 
-Ramu
+| Pin | Function |
+|-----|--------|
+| ui[0] | Coin ₹1 |
+| ui[1] | Coin ₹2 |
+| ui[2] | Coin ₹5 |
+| ui[3] | Coin ₹10 |
+| ui[4] | Flow Sensor |
+| ui[5] | Reset |
+| uo[0] | Valve Control |
+| uo[1-7] | Liters Output |
+
+---
+
+## Notes
+
+- Designed for TinyTapeout SKY130
+- Works with simple FSM logic
+- Suitable for smart water vending systems
