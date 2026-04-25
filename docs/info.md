@@ -1,58 +1,41 @@
-How it works
+## How it works
 
-The AquaPay Chip is a coin-based smart water dispensing controller designed for water ATM systems.
+The AquaPay_Chip is a coin-based water dispensing system implemented using Verilog.
 
-The chip accepts coin inputs and dispenses a predefined amount of water using a hybrid control mechanism:
+- The system accepts coin inputs (Rs 1, Rs 2, Rs 5, Rs 10)
+- Based on the coin value, a predefined amount of water is released
+- A timer controls how long the tap remains open
+- Water flow is counted in steps until the target level is reached
+- Once the required amount is dispensed, the tap automatically closes
 
-Flow-based control: Counts water using a flow sensor (1 pulse = 1 unit of water)
-Time-based control: Limits dispensing duration to prevent overflow or sensor failure
-💡 Coin to Water Mapping
-₹1 → 2 Liters
-₹2 → 5 Liters
-₹5 → 20 Liters
-₹10 → 40 Liters
-⚙️ Working Steps
-User inserts a coin (input signal)
-Chip sets target water amount and time limit
-Valve turns ON
-Water flow is counted using the flow sensor
-Valve turns OFF when:
-Target liters reached, OR
-Time limit exceeded (safety feature)
+Example:
+- Rs 2 → 5 liters
+- Rs 5 → 20 liters
+- Rs 10 → 40 liters
 
-This ensures accurate and safe water dispensing, even under low pressure or sensor faults.
+---
 
-How to test
-🔌 Inputs (ui_in)
-ui_in[0] → ₹1 coin
-ui_in[1] → ₹2 coin
-ui_in[2] → ₹5 coin
-ui_in[3] → ₹10 coin
-ui_in[4] → Flow sensor pulse
-📤 Outputs (uo_out)
-uo_out[0] → Valve ON/OFF
-uo_out[1:7] → Water dispensed (binary count)
-🧪 Test Procedure
-Apply reset (rst_n = 0 → 1)
-Insert coin by setting corresponding input HIGH for 1 clock cycle
-Generate flow pulses using ui_in[4]
-Observe:
-Valve turns ON
-Water count increases
-Valve turns OFF at correct limit
-✅ Example Test (₹5 coin)
-Set ui_in[2] = 1 (₹5)
-Provide 20 flow pulses on ui_in[4]
-Output:
-Valve ON during flow
-Turns OFF after 20 pulses
-External hardware
+## How to test
 
-This design is fully digital and does not require external hardware for simulation.
+1. Apply clock signal to the design
+2. Reset the system using `rst_n = 0`, then set `rst_n = 1`
+3. Provide coin input using `ui_in`:
+   - 1 → Rs 1
+   - 2 → Rs 2
+   - 5 → Rs 5
+   - 10 → Rs 10
+4. Observe output on `uo_out`:
+   - Tap ON/OFF signal
+   - Water level increment
+5. Verify:
+   - Tap opens for correct duration
+   - Water stops after reaching target level
 
-However, for real-world deployment, the following components can be connected:
+---
 
-Water flow sensor (pulse output type)
-Solenoid valve (controlled via driver circuit)
-Coin detection module
-Power supply and control circuitry
+## External hardware
+
+- Water valve (solenoid valve)
+- Relay module
+- Water flow sensor (optional)
+- Microcontroller (if interfacing outside chip)
