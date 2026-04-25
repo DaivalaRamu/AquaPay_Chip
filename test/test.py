@@ -10,7 +10,7 @@ from cocotb.triggers import ClockCycles
 async def test_project(dut):
     dut._log.info("Start AquaPay Chip Test")
 
-    # Clock: 10us period
+    # Clock setup (10 us period)
     clock = Clock(dut.clk, 10, unit="us")
     cocotb.start_soon(clock.start())
 
@@ -30,12 +30,11 @@ async def test_project(dut):
 
     await ClockCycles(dut.clk, 20)
 
-    value = dut.uo_out.value.integer   # ✅ FIXED HERE
-    tap = value & 0x1                  # bit0 = tap
-    liters = (value >> 1) & 0x7F       # remaining bits = liters
+    value = dut.uo_out.value.integer
+    tap = value & 0x1
+    liters = (value >> 1) & 0x7F
 
     dut._log.info(f"Tap={tap}, Liters={liters}")
-
     assert liters == 2, "₹1 should give 2 liters"
 
     # -------------------------------
@@ -51,7 +50,6 @@ async def test_project(dut):
     liters = (value >> 1) & 0x7F
 
     dut._log.info(f"Tap={tap}, Liters={liters}")
-
     assert liters == 5, "₹2 should give 5 liters"
 
     # -------------------------------
@@ -67,7 +65,6 @@ async def test_project(dut):
     liters = (value >> 1) & 0x7F
 
     dut._log.info(f"Tap={tap}, Liters={liters}")
-
     assert liters == 20, "₹5 should give 20 liters"
 
     # -------------------------------
@@ -83,7 +80,6 @@ async def test_project(dut):
     liters = (value >> 1) & 0x7F
 
     dut._log.info(f"Tap={tap}, Liters={liters}")
-
     assert liters == 40, "₹10 should give 40 liters"
 
     dut._log.info("All tests PASSED ✅")
